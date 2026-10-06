@@ -11,3 +11,25 @@ venv/
 *.fit
 uploads/
 data/
+
+# Local Garmin authentication and personal activity exports
+.garmin/
+.garminconnect/
+garmin_tokens/
+garmin_tokens.*
+garmin_token.*
+.garmin_tokens*
+.garmin_token*
+.garth/
+activity_data/
+personal_activity_data/
+
+# Build/test output and local SQLite databases
+.pytest_cache/
+*.tsbuildinfo
+*.sqlite
+*.sqlite3
+*.db
+*.sqlite-*
+*.sqlite3-*
+*.db-*
