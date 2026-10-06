@@ -2,33 +2,33 @@
 
 ## Phase
 
-Garmin ingestion MVP preparation; TASK-001 application scaffold complete.
+Garmin ingestion MVP: TASK-003 activity persistence/import API complete; real-account validation pending.
 
 ## Completed
 
-- Git repository initialized and GitHub repository connected; Codex configured.
-- MVP workflow and manual “Import Latest Run” interaction decided.
-- Lightweight AI documentation and privacy ignore rules established.
-- TASK-001: Next.js/TypeScript/Tailwind landing page, FastAPI application, configurable local SQLite connection foundation, and `/health` endpoint.
-- Backend tests and local setup/check commands documented in the root README.
+- Repository/GitHub connection, Codex setup, lightweight AI docs, and privacy ignore rules.
+- TASK-001: Next.js/TypeScript/Tailwind scaffold, FastAPI `/health`, and SQLite foundation.
+- TASK-002: isolated Garmin client, session reuse, local login/MFA CLI, recent-run selection, and six-field normalization.
+- TASK-003: SQLite activity storage keyed by `external_activity_id` and `POST /api/garmin/import-latest`. New imports return 201/`imported`; duplicates return 200/`already_exists` with the original stored record. Concurrent imports cannot create duplicate rows.
+- Setup, API responses, and check commands documented in the root README.
 
 ## Current decisions
 
-Personal use; manually triggered Garmin import; no background polling; SQLite for MVP; Garmin isolated behind an adapter/service boundary; deterministic analysis before LLM coaching.
+Personal use; user-triggered imports only; no background polling; SQLite for MVP; Garmin behind an adapter boundary; deterministic analysis before LLM coaching. `garminconnect==0.3.17`; Python 3.12+. API uses saved tokens only; initial login/MFA stays in the CLI. Configuration and field units live in the root README.
 
 ## Not implemented
 
-Garmin integration, normalized activity model and persistence schema, analysis engine, OpenAI coaching, training planner, and frontend API consumption.
+Activity read API, frontend API consumption, analysis engine, OpenAI coaching, and training planner.
 
 ## Validation and limitations
 
-- Four backend tests, `pip check`, frontend lint/typecheck/production build, live server smoke checks, and diff/privacy checks pass.
-- Production npm audit is clean. Full npm audit reports five high-severity advisories in the development-only ESLint dependency chain; the suggested fix downgrades the Next.js lint configuration and was not applied.
-- Backend tests emit an upstream Starlette/AnyIO deprecation warning. No activity tables or import controls exist yet.
+- All 63 backend tests pass with synthetic data and mocked Garmin access, including repeated/concurrent imports, restart persistence, and API failure paths. `pip check`, CLI help, diff, and privacy checks pass.
+- Real-account login, session reuse, and end-to-end import remain unverified; validate locally using the root README. Never commit tokens or personal activity data.
+- Recent-run selection remains bounded and limited to recognized running types. Duplicate imports preserve the first record; metric updates are not synchronized.
+- Existing limitations: upstream Starlette/AnyIO test warning and five development-only npm ESLint advisories; TASK-001 production npm audit was clean. Frontend unchanged in TASK-003.
 
 ## Next task
 
-**TASK-002 — Normalized activity model and persistence**
+**TASK-004 — Read stored activity data**
 
-Define a minimal `NormalizedActivity` with explicit units and missing-data behavior; add SQLite activity storage and tests using synthetic fixtures. Keep domain data independent of Garmin payloads.
-Do not implement Garmin integration or LLM coaching in this task.
+Add a read-only latest-activity API with empty-state handling and synthetic-data tests. Keep retrieval independent of Garmin access; defer frontend integration, analysis, and coaching.

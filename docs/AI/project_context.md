@@ -18,4 +18,4 @@ Add OpenAI API coaching based on calculated metrics. Consider official Garmin Ac
 
 ## Current non-goals
 
-Background polling, official Garmin Activity API integration, multi-user operation, and a complex training platform. The next scaffold task excludes Garmin import; see `current_status.md` for current delivery scope.
+Background polling, official Garmin Activity API integration, multi-user operation, and a complex training platform. See `current_status.md` for current delivery scope.

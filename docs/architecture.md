@@ -1,6 +1,14 @@
 # Intended architecture
 
-The target boundaries below guide future implementation. The scaffold uses `frontend/` (Next.js App Router) and `backend/app/` (FastAPI). `backend/app/database.py` owns SQLite connections; startup creates the local database, and `/health` checks connectivity. No activity schema or frontend API consumption exists yet. See the root README for setup and checks. No additional services are required for the MVP.
+The application uses `frontend/` (Next.js App Router) and `backend/app/` (FastAPI). No additional services are required for the MVP. See the root README for setup, API responses, and checks.
+
+- `database.py`: SQLite connections and idempotent activity-table initialization.
+- `activity_store.py`: normalized storage; unique `external_activity_id` prevents duplicates atomically and preserves the original row.
+- `integrations/garmin.py`: saved-session access and Garmin response normalization into `activities.py`’s `NormalizedActivity`.
+- `garmin_cli.py`: manual login/access check; no activity persistence.
+- `main.py`: `/health` and `POST /api/garmin/import-latest`; coordinates Garmin retrieval and storage. Import uses saved tokens without interactive login.
+
+Frontend API consumption, analysis, and coaching remain unimplemented. The boundaries below guide those future components.
 
 ```text
 Garmin response → Garmin adapter → NormalizedActivity → activity storage
